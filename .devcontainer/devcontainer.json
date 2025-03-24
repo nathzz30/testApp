@@ -1,0 +1,7 @@
+{
+    "name": "Node.js Dev Environment",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node:latest",
+    "features": {
+      "docker-in-docker": "latest"
+    }
+  }
