@@ -1,7 +1,9 @@
 {
   "name": "nodejs-microservices",
   "private": true,
-  "workspaces": ["apps/*"],
+  "workspaces": [
+    "apps/*"
+  ],
   "devDependencies": {
     "turbo": "^2.4.4"
   },
@@ -10,6 +12,5 @@
     "dev": "turbo run dev",
     "test": "turbo run test"
   },
-  "packageManager": "yarn@latest"
-  
+  "packageManager": "yarn@4.7.0"
 }

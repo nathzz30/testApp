@@ -1,0 +1,15 @@
+{
+    "extends": [],
+    "globalDependencies": [],
+    "globalEnv": [],
+    "tasks": {
+      "build": {
+        "dependsOn": ["^build"],
+        "outputs": ["dist/**"]
+      },
+      "lint": {},
+      "dev": {
+        "cache": false
+      }
+    }
+  }
