@@ -1,0 +1,22 @@
+{
+    "name": "api-gateway",
+    "version": "1.0.0",
+    "description": "API Gateway for routing microservices",
+    "main": "server.ts",
+    "scripts": {
+      "start": "ts-node server.ts",
+      "dev": "nodemon server.ts",
+      "build": "tsc",
+      "test": "jest"
+    },
+    "dependencies": {
+      "express": "^4.18.2",
+      "http-proxy-middleware": "^2.0.6"
+    },
+    "devDependencies": {
+      "ts-node": "^10.9.1",
+      "nodemon": "^2.0.22",
+      "typescript": "^5.0.4"
+    }   
+  }
+  

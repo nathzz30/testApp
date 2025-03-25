@@ -1,0 +1,15 @@
+{
+  "name": "nodejs-microservices",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "devDependencies": {
+    "turbo": "^2.4.4"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test"
+  },
+  "packageManager": "yarn@latest"
+  
+}
