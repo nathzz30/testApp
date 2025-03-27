@@ -25,5 +25,5 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix"
   },
-  "packageManager": "yarn@4.7.0"
+  "packageManager": "yarn@1.22.22"
 }
