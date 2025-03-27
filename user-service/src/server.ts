@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import { connectDB } from '../db';
 import { User } from '../models/User';
 import dotenv from 'dotenv';
-import { Sequelize } from 'sequelize';
 
 // Load environment variables
 dotenv.config();
