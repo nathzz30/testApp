@@ -37,4 +37,10 @@ app.post('/users', async (req: Request, res: Response) => {
   }
 });
 
-app.listen(PORT, () => console.log(`✅ User Service running on port ${PORT}`));
+// Start server only if not in test environment
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => console.log(`✅ User Service running on port ${PORT}`));
+}
+
+// Export app for testing
+export default app;
