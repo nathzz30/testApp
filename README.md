@@ -15,7 +15,7 @@ These instructions will help you get the `user-service` running locally.
 
 ### 📦 Prerequisites
 - Node.js (>=18)
-- Yarn (v4+)
+- Yarn (v1.22.22)
 - Docker & Docker Compose
 
 ---
