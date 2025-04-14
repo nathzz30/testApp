@@ -10,7 +10,8 @@
     "test": "jest --passWithNoTests",
     "lint": "eslint . --ext .ts,.js",
     "lint:fix": "eslint . --ext .ts,.js --fix",
-    "reinstall": "rm -rf node_modules yarn.lock && yarn install"
+    "reinstall": "rm -rf node_modules yarn.lock && yarn install",
+    "setup-db": "ts-node setupDB.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

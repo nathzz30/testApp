@@ -23,7 +23,9 @@
     "dev": "turbo run dev",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "lint:fix": "turbo run lint -- --fix"
+    "lint:fix": "turbo run lint -- --fix",
+    "setup-db:user-service": "ts-node user-service/setupDB.ts",
+    "setup-db:auth-service": "ts-node auth-service/setupDB.ts"
   },
   "packageManager": "yarn@1.22.22"
 }

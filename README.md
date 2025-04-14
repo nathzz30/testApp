@@ -11,11 +11,11 @@ Each service is built with **Node.js**, **Express**, **TypeScript**, and uses **
 
 ## 🚀 Getting Started
 
-These instructions will help you get the `user-service` running locally.
+These instructions will help you get all microservices running locally.
 
 ### 📦 Prerequisites
 - Node.js (>=18)
-- Yarn (v1.22.22)
+- Yarn (v1.22.22 or newer)
 - Docker & Docker Compose
 
 ---
@@ -33,11 +33,13 @@ $ yarn install
 # 3. Start PostgreSQL and all services
 $ docker-compose up -d
 
-# 4. Setup the database
+# 4. Setup the databases
 $ yarn setup-db:user-service
+$ yarn setup-db:auth-service
 
-# 5. Start the user-service (dev mode)
+# 5. Start each service (dev mode)
 $ yarn workspace user-service dev
+$ yarn workspace auth-service dev
 ```
 
 ---
@@ -45,18 +47,29 @@ $ yarn workspace user-service dev
 ### 🧪 Run Tests
 
 ```bash
+# Run tests for user-service
 $ yarn workspace user-service test
+
+# Run tests for auth-service
+$ yarn workspace auth-service test
 ```
 
 ---
 
 ### ✅ Endpoints
 
-Once the service is running:
+Once the services are running:
 
+#### User Service
 ```bash
 GET http://localhost:4002/users
 POST http://localhost:4002/users
+```
+
+#### Auth Service
+```bash
+POST http://localhost:4001/auth/register
+POST http://localhost:4001/auth/login
 ```
 
 ---
@@ -74,6 +87,19 @@ user-service/
 │   └── server.ts
 └── __tests__/
     └── server.test.ts
+
+auth-service/
+│
+├── db.ts
+├── setupDB.ts        # Initializes DB and creates it if not present
+├── models/
+│   └── User.ts
+├── routes/
+│   └── authRoutes.ts
+├── src/
+│   └── server.ts
+└── __tests__/
+    └── server.test.ts
 ```
 
 ---
@@ -82,6 +108,7 @@ user-service/
 
 ```bash
 $ yarn lint
+$ yarn lint:fix
 ```
 
 ---
@@ -90,13 +117,17 @@ $ yarn lint
 
 Create a `.env` file inside each service folder:
 
+#### user-service/.env
 ```env
 DB_URL=postgres://postgres:password@localhost:5432/users
-DB_USER=postgres
-DB_PASSWORD=password
-DB_HOST=localhost
-DB_PORT=5432
-DB_NAME=users
+PORT=4002
+```
+
+#### auth-service/.env
+```env
+DB_URL=postgres://postgres:password@localhost:5432/auth
+JWT_SECRET=supersecretkey
+PORT=4001
 ```
 
 ---
@@ -120,14 +151,24 @@ services:
     ports:
       - "4002:4002"
 
-  postgres:
-    image: postgres
+  postgres-auth:
+    image: postgres                       
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: users
+      POSTGRES_USER: postgres              
+      POSTGRES_PASSWORD: password         
+      POSTGRES_DB: auth                    
     ports:
-      - "5432:5432"
+      - "5433:5432"                        
+
+  # 🛢️ PostgreSQL for user-service
+  postgres-user:
+    image: postgres                       
+    environment:
+      POSTGRES_USER: postgres             
+      POSTGRES_PASSWORD: password          
+      POSTGRES_DB: users                   
+    ports:
+      - "5432:5432" 
 ```
 
 ---
@@ -135,12 +176,9 @@ services:
 ### 🧠 Helpful Commands
 
 ```bash
-# Reinstall dependencies from scratch
+# Reinstall dependencies from scratch (cross-platform)
 $ yarn reinstall
 
-# Setup DB manually
+# Setup DB manually for each service
+$ yarn setup-db:auth-service
 $ yarn setup-db:user-service
-```
-
-Let me know if you want instructions for `auth-service` or `api-gateway` too!
-
