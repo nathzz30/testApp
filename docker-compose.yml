@@ -11,11 +11,25 @@ services:
     build: ./user-service
     ports:
       - "4002:4002"
-  postgres:
-    image: postgres
+      
+  # 🛢️ PostgreSQL for auth-service
+  postgres-auth:
+    image: postgres                        # Use the official PostgreSQL image
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: users
+      POSTGRES_USER: postgres              # Set the default database user
+      POSTGRES_PASSWORD: password          # Set the user's password
+      POSTGRES_DB: auth                    # Name of the database to create for auth-service
     ports:
-      - "5432:5432"
+      - "5433:5432"                        # Map port 5433 on your machine to 5432 in the container
+                                           # (5432 is the default Postgres port inside the container)
+
+  # 🛢️ PostgreSQL for user-service
+  postgres-user:
+    image: postgres                        # Use the same official PostgreSQL image
+    environment:
+      POSTGRES_USER: postgres              # Set the default database user
+      POSTGRES_PASSWORD: password          # Set the user's password
+      POSTGRES_DB: users                   # Name of the database to create for user-service
+    ports:
+      - "5432:5432"                        # Map port 5432 on your machine to 5432 in the container
+                                           # Since this is the default port, user-service will use this by default
