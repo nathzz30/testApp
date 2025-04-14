@@ -1,21 +1,31 @@
-// This will be implemented in the next section
-// import express, { Request, Response } from 'express';
-// import jwt from 'jsonwebtoken';
+import express, { Request, Response } from "express"; // Import Express and types for request/response handling
+import dotenv from "dotenv"; // Import dotenv to load environment variables from .env file
+import { connectDB } from "../db"; // Import the function that initializes the database
+import authRouter from '../routes/authRoutes'; // Import the router
 
-// const app = express();
-// app.use(express.json());
+dotenv.config(); // Load environment variables from .env
 
-// const SECRET_KEY = 'yourSecretKey'; // Move to env variable in production
+const app = express(); // Initialize Express application
+app.use(express.json()); // Middleware to parse incoming JSON payloads
 
-// app.post('/login', (req: Request, res: Response) => {
-//     const { username } = req.body;
-    
-//     if (!username) {
-//         return res.status(400).json({ error: 'Username is required' });
-//     }
+const PORT = process.env.PORT || 4001; // Use PORT from .env or default to 4001
 
-//     const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: '1h' });
-//     res.json({ token });
-// });
+connectDB(); // Connect to the database
 
-// app.listen(4001, () => console.log('Auth Service running on port 4001'));
+// Use the authRouter for routes under /auth
+app.use('/auth', authRouter);
+
+// Start server only if not in test environment
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// Simple health check route
+app.get("/health", (req: Request, res: Response) => {
+  res.send("✅ Auth Service is healthy");
+});
+
+// Export the app instance for testing purposes
+export default app;
