@@ -9,7 +9,7 @@ const DATABASE_URL = process.env.DB_URL;
 
 if (!DATABASE_URL) {
   // Ensure a valid DB connection string is provided
-  throw new Error("DATABASE_URL is missing from environment variables");
+  throw new Error("DATABASE URL is missing from environment variables");
 }
 
 // Initialize Sequelize instance with DB connection and dialect
