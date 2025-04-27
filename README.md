@@ -40,6 +40,7 @@ $ yarn setup-db:auth-service
 # 5. Start each service (dev mode)
 $ yarn workspace user-service dev
 $ yarn workspace auth-service dev
+$ yarn workspace api-gateway dev
 ```
 
 ---

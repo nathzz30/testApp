@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -7,7 +10,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.status(401).json({ error: 'Unauthorized: No token provided' });
+    res.status(401).json({ error: 'Unauthorized: Invalid token' });
     return;
   }
 
@@ -19,7 +22,7 @@ export const authenticate = (req: Request, res: Response, next: NextFunction) =>
     (req as any).user = decoded;
     next();
   } catch (error) {
-    res.status(401).json({ error: 'Unauthorized: Invalid token' });
+    res.status(401).json({ error });
     return;
   }
 };
