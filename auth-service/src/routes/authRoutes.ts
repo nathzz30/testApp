@@ -1,19 +1,19 @@
-import { Router, Request, Response } from 'express';
-import { User } from '../models/User';
+import { Router, Request, Response, NextFunction } from 'express';
+import { User } from '../../models/User';
 import jwt from 'jsonwebtoken';
+import { ApiError } from '../middlewares/apiError';
 
 const router = Router();
 
 // POST /auth/register - Create a new user
-router.post('/register', async (req: Request, res: Response) => {
+router.post('/register', async (req: Request, res: Response, next: NextFunction) => {
   const { name, email, password } = req.body;
 
   try {
     // Check if user already exists
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      res.status(409).json({ error: 'User already exists' });
-      return;
+      throw new ApiError(409, 'User already exists');
     }
 
     // Create user (will hash password via hook)
@@ -21,21 +21,19 @@ router.post('/register', async (req: Request, res: Response) => {
 
     res.status(201).json({ message: 'User created', user: { id: user.id, email: user.email } });
   } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    next(error);
   }
 });
 
 // POST /auth/login - Authenticate user and return JWT
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login', async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
 
   try {
     const user = await User.findOne({ where: { email } });
 
     if (!user || !(await user.validatePassword(password))) {
-      res.status(401).json({ error: 'Invalid email or password' });
-      return;
+      throw new ApiError(401, 'Invalid email or password');
     }
 
     // Create JWT token
@@ -47,8 +45,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
     res.json({ token });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    next(error);
   }
 });
 

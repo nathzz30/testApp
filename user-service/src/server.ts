@@ -1,7 +1,8 @@
 import express, { Request, Response } from 'express';
-import { connectDB } from '../db';
-import { User } from '../models/User';
 import dotenv from 'dotenv';
+import { connectDB } from '../db';
+import { errorHandler } from './middlewares/errorHandler';
+import userRoutes from './Routes/userRoutes';
 
 // Load environment variables
 dotenv.config();
@@ -9,38 +10,24 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const PORT = process.env.DB_SERVICE_PORT || 4002;
-
-// Connect to the database and sync models
+// Connect to the database
 connectDB();
 
-// GET /users - Retrieve all users
-app.get('/users', async (req: Request, res: Response) => {
-  try {
-    const users = await User.findAll();
-    res.json(users);
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+// Mount routes
+app.use('/users', userRoutes);
 
-// POST /users - Add a new user
-app.post('/users', async (req: Request, res: Response) => {
-  try {
-    const { name, email } = req.body;
-    const newUser = await User.create({ name, email });
-    res.status(201).json(newUser);
-  } catch (error) {
-    console.error('Error creating user:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+// Error handler (should always be after routes)
+app.use(errorHandler);
 
 // Start server only if not in test environment
+const PORT = process.env.DB_SERVICE_PORT || 4002;
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => console.log(`✅ User Service running on port ${PORT}`));
 }
 
-// Export app for testing
+// Simple health check route
+app.get("/health", (req: Request, res: Response) => {
+  res.send("✅ User Service is healthy");
+});
+
 export default app;
