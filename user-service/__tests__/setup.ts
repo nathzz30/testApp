@@ -6,6 +6,20 @@ jest.mock("../models/User", () => ({
       { id: 2, name: "Jane Doe", email: "jane@example.com" },
     ]),
     create: jest.fn().mockImplementation((data) => Promise.resolve({ id: 3, ...data })),
+    update: jest.fn().mockResolvedValue([1]),
+    findByPk: jest.fn().mockImplementation((id) =>
+      Promise.resolve({
+        id,
+        name: "Test User",
+        email: "test@example.com",
+        update: jest.fn().mockResolvedValue({
+          id,
+          name: "Updated User",
+          email: "test@example.com",
+        }),
+      })
+    ),
+    destroy: jest.fn().mockResolvedValue(1),
   },
 }));
 
