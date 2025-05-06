@@ -4,9 +4,8 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "user-service",
-    "auth-service",
-    "api-gateway"
+    "services/*",
+    "packages/*"
   ],
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
